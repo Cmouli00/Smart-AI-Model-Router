@@ -24,6 +24,7 @@ async def ask_router(query: Query, background_tasks: BackgroundTasks):
     # Check if a similar question was asked recently to save 100% of the cost
     cached_answer = check_cache(query.prompt)
     if cached_answer:
+        background_tasks.add_task(log_to_db, query.prompt, "", "cache", 0.00, COST_PER_1K["gpt-4o"])
         return {
             "response": cached_answer, 
             "source": "semantic_cache", 
